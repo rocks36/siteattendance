@@ -27,9 +27,20 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Remove corrupted default icons
+      - name: Generate valid app icons
         run: |
-          rm -f android/app/src/main/res/mipmap-*/ic_launcher.png
+          mkdir -p android/app/src/main/res/mipmap-mdpi
+          mkdir -p android/app/src/main/res/mipmap-hdpi
+          mkdir -p android/app/src/main/res/mipmap-xhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxhdpi
+          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
+          
+          ICON_BASE64="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+          echo "$ICON_BASE64" | base64 --decode > android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+          echo "$ICON_BASE64" | base64 --decode > android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+          echo "$ICON_BASE64" | base64 --decode > android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+          echo "$ICON_BASE64" | base64 --decode > android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+          echo "$ICON_BASE64" | base64 --decode > android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
 
       - name: Build Release APK
         run: flutter build apk --release --no-tree-shake-icons --android-skip-build-dependency-validation
