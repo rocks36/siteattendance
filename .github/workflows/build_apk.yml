@@ -27,8 +27,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Remove corrupted default icons
+        run: |
+          rm -f android/app/src/main/res/mipmap-*/ic_launcher.png
+
       - name: Build Release APK
-        run: flutter build apk --release --no-tree-shake-icons
+        run: flutter build apk --release --no-tree-shake-icons --android-skip-build-dependency-validation
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
